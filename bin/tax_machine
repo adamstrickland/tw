@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH << '../lib'
+# begin
+require 'rubygems'
+  require 'tax_machine/app'
+# rescue LoadError
+  # $stderr.puts "Bad input file path"
+  # exit(1)
+# end
