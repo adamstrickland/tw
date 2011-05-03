@@ -64,11 +64,11 @@ describe TaxMachine::Register do
         $3.to_f.should eql @price
       end
       
-      describe "find a match" do
-        it "should find one" do
-          @register.find_match(@input).should eql 0
-        end
-      end
+      # describe "find a match" do
+      #   it "should find one" do
+      #     @register.find_match(@input).should eql 0
+      #   end
+      # end
       
       describe "parsing" do
         subject{ @register.parse(@input) }
@@ -90,7 +90,7 @@ describe TaxMachine::Register do
         end
         
         subject{ @register.parse(@input) }
-        it{ subject.tax.should eql 0 }
+        it{ subject.tax.should eql 0.0 }
       end
     end
   end

@@ -1,2 +1,2 @@
 require 'tax_machine/register'
-TaxMachine::Register.run(ARGV[0])
+TaxMachine::Register.run_from_file(ARGV[0])

@@ -1,0 +1,5 @@
+<%
+  opts = "--color --format #{ENV['CUCUMBER_FORMAT'] || 'progress'} --strict --tags ~@wip"
+%>
+autotest: <%= opts %>
+autotest-all: <%= opts %>

@@ -29,7 +29,7 @@ describe TaxMachine::Basket do
 1 #{@killozap.description}: #{@killozap.total}
 1 #{@pggb.description}: #{@pggb.total}
 Sales Taxes: #{@basket.sales_tax}
-Total: #{@basket.total}
+Total: #{'%.2f' % @basket.total}
 EOS
   end
   
