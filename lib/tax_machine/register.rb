@@ -77,6 +77,23 @@ module TaxMachine
       @basket.items << self.parse(input)
     end
     
+    def matchify(input)
+      self.configs.map do |config|
+        mr = config.pattern.match(input) 
+        captures = Hash[*(config.registers.map do |k,v|
+          { k => mr[v] }
+        end).map{ |_| _.to_a}.flatten
+        captures[:rate] = mr.exceptions.detect{ |ex| captures[ex[:attribute]] =~ ex[:pattern] } ? 0.0 : mr.rate
+        captures
+      end
+    end
+    
+    def parse(input)
+      array_of_capture_hashes = matchify(input)
+      # data.group_by{|h| {:key1 => h[:key1], :key2 => h[:key2]}}.map{|k,g| k.merge({:rate => g.map{|hh| hh[:rate]}.inject(0){|s,i| s + i}})}
+      
+    end
+    
     def find_match(input)
       match = self.configs.detect{ |c| input =~ c.pattern }
       self.configs.index(match)
