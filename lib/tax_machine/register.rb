@@ -1,5 +1,4 @@
 require 'tax_machine/calculator'
-require 'tax_machine/float'
 require 'tax_machine/item'
 require 'tax_machine/basket'
 require 'tax_machine/configuration'
@@ -90,17 +89,25 @@ module TaxMachine
     def matchify(input)
       self.configs.map do |config|
         mr = config.pattern.match(input) 
-        captures = self.a_of_h_to_h(config.registers.map{ |k,v| { k => mr[v] } })
-        captures[:rate] = config.exceptions.detect{ |ex| 
-          captures[ex[:attribute]] =~ ex[:pattern] 
-        } ? 0.0 : config.rate
-        captures
-      end
+        if mr
+          captures = self.a_of_h_to_h(config.registers.map{ |k,v| { k => mr[v] } })
+          captures[:rate] = config.exceptions.detect{ |ex| 
+            captures[ex[:attribute]] =~ ex[:pattern] 
+          } ? 0.0 : config.rate
+          captures[:imported] = !(input =~ /^.*imported.*$/).nil?
+          captures
+        else
+          nil
+        end
+      end.compact
     end
     
     def parse(input)
       array_of_capture_hashes = matchify(input)
-      data = array_of_capture_hashes.group_by{|h| {:count => h[:count], :description => h[:description], :price => h[:price]} }.map{|k,g| k.merge({:rate => g.map{|hh| hh[:rate]}.inject(0){|s,i| s + i}})}.first
+      data = array_of_capture_hashes.group_by do |h| 
+        keys = h.clone.delete_if{|k,v| [:rate].include?(k) }
+        keys
+      end.map{|k,g| k.merge({:rate => g.map{|hh| hh[:rate]}.inject(0){|s,i| s + i}})}.first
       tax = TaxMachine::Calculator.taxify(data[:price].to_f, data[:rate].to_f, data[:count].to_i)
       Item.new(data[:description], data[:price], data.merge(:tax => tax))
     end

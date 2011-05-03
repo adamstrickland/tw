@@ -25,7 +25,7 @@ Given a TaxMachine
 When I run the data:
 """
 1 imported box of chocolates at 10.00
- 1 imported bottle of perfume at 47.50
+1 imported bottle of perfume at 47.50
 """
 Then I should see the output:
 """
@@ -42,7 +42,7 @@ When I run the data:
 1 imported bottle of perfume at 27.99
 1 bottle of perfume at 18.99
 1 packet of headache pills at 9.75
-box of imported chocolates at 11.25
+1 box of imported chocolates at 11.25
 """
 Then I should see the output:
 """

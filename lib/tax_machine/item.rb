@@ -19,7 +19,11 @@ module TaxMachine
     end
     
     def conjugated_description
-      self.imported? ? "imported #{self.description}" : self.description
+      self.imported? ? "imported #{self.cleansed_description}" : self.cleansed_description
+    end
+    
+    def cleansed_description
+      self.description.gsub(/imported\s/, "")
     end
     
     def total

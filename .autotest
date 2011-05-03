@@ -2,6 +2,9 @@ require 'autotest/fsevent'
 require 'autotest/growl'
 
 Autotest.add_hook :initialize do |at|
+  
+  $LOAD_PATH << './lib'
+  
   %w{.git .DS_Store ._* vendor}.each do |ex|
     autotest.add_exception ex
   end
